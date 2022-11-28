@@ -80,3 +80,37 @@ router.post("/update-playlist", authMiddleware, async (req, res) => {
     });
   }
 });
+
+router.post("/delete-playlist", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.userId);
+    let existingPlaylists = user.playlists;
+    existingPlaylists = existingPlaylists.filter((playlist) => {
+      if (playlist.name === req.body.name) {
+        return false;
+      }
+      return true;
+    });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.userId,
+      {
+        playlists: existingPlaylists,
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      message: "Playlist deleted successfully",
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error deleting playlist",
+      success: false,
+      data: error,
+    });
+  }
+});
+module.exports = router;
