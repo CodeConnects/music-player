@@ -7,26 +7,26 @@ const authMiddleWare = require("../middlewares/authMiddleware");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 router.post("/register", async (req, res) => {
-  try {
-    const password = req.body.password;
-    const salt = await bcrypt.genSaltSync(10);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
-    req.body.password = hashedPassword;
-    const user = new User(req.body);
-    const existingUser = await User.findOne({ email: req.body.email });
-    if (existingUser) {
-      return res
-        .status(200)
-        .send({ message: "User already exists", success: false });
-    } else {
-      await user.save();
-      return res
-        .status(200)
-        .send({ message: "User registered successfully", success: true });
+    try {
+        const password = req.body.password;
+        const salt = await bcrypt.genSaltSync(10);
+        const hashedPassword = await bcrypt.hashSync(password, salt);
+        req.body.password = hashedPassword;
+        const user = new User(req.body);
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+        return res
+            .status(200)
+            .send({ message: "User already exists", success: false });
+        } else {
+        await user.save();
+        return res
+            .status(200)
+            .send({ message: "User registered successfully", success: true });
+        }
+    } catch (error) {
+        return res.status(500).send({ message: error.message, success: false });
     }
-  } catch (error) {
-    return res.status(500).send({ message: error.message, success: false });
-  }
 });
 
 router.post("/login", async (req, res) => {
@@ -58,4 +58,20 @@ router.post("/login", async (req, res) => {
     } catch (error) {
       return res.status(500).send({ message: error.message, success: false });
     }
-  });
+});
+  
+router.post("/get-user-data", authMiddleware, async (req, res) => {
+    try {
+      const user = await User.findById(req.body.userId);
+      user.password = undefined;
+      return res.status(200).send({
+        message: "User data fetched successfully",
+        success: true,
+        data: user,
+      });
+    } catch (error) {
+      return res.status(500).send({ message: error.message, success: false });
+    }
+});
+  
+module.exports = router;
