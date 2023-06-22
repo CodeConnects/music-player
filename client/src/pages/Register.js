@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function Register() {
   const [user, setUser] = useState({
@@ -7,8 +8,17 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-  const register = () => {
-    console.log(user);
+  const register = async () => {
+    try {
+      const response = await axios.post("/api/users/register", user);
+      if (response.data.success) {
+        alert("User has been registered successfully");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   return (
     <div className="flex min-h-screen items-start justify-center text-center ">
