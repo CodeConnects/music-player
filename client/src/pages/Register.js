@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [user, setUser] = useState({
@@ -58,6 +59,7 @@ function Register() {
         <button
           className="border-2 border-gray-300 rounded-md p-2 m-2 bg-sky-300 hover:bg-sky-500"
           onClick={register}>Register</button>
+        <Link to="/login" className="text-gray-600 underline">Login</Link>
       </div>
     </div>
   );
