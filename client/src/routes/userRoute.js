@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
 router.post('/register', async (req, res) => {
   try {
@@ -20,6 +21,29 @@ router.post('/register', async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({ message: err.message, success: false });
+  }
+});
+
+router.post('/login', async (req, res) => {
+  try {
+    // lookup user by email
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send({ message: "User not found", success: false });
+    }
+
+    // compare passwords
+    const validPassword = await bcrypt.compareSync(req.body.password, user.password);
+    if (validPassword) {
+      const token = jwt.sign({ userID: user._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+      
+      // send userID in token to client
+      return res.status(200).send({ message: "Successfull login", success: true, data: token });
+    } else {
+      return res.status(400).send({ message: "Invalid password", success: false });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message, success: false });
   }
 });
 
