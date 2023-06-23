@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: #f4f4f4;
+}
+.form-wrap {
+  background-color: #fff;
+}
+input {
+  background-color: #eee;
+}
