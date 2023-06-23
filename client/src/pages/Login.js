@@ -21,7 +21,7 @@ function Login() {
   }
   return (
     <div className="flex min-h-screen items-start justify-center text-center ">
-      <div className="flex flex-col p-5 mt-6 border border-gray-400">
+      <div className="form-wrap flex flex-col p-5 mt-6 border border-gray-400">
         
         <h1 className="text-3xl font-bold mb-5 mt-1">Login</h1>
         
