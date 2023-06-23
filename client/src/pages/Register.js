@@ -34,29 +34,30 @@ function Register() {
           className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
         />
         <input 
-          type="text" 
+          type="text"
+          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
           placeholder="Email"
           value={user.email}
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
         />
         <input 
-          type="password" 
+          type="password"
+          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
           placeholder="Password"
           value={user.password}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
-          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
         />
         <input 
-          type="password" 
+          type="password"
+          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
           placeholder="Confirm Password"
           value={user.confirmPassword}
           onChange={(e) => setUser({ ...user, confirmPassword: e.target.value })}
-          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
         />
         
         <button
-          onClick={register} className="border-2 border-gray-300 rounded-md p-2 m-2 bg-sky-300">Register</button>
+          className="border-2 border-gray-300 rounded-md p-2 m-2 bg-sky-300 hover:bg-sky-500"
+          onClick={register}>Register</button>
       </div>
     </div>
   );
