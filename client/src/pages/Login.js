@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -11,7 +12,11 @@ function Login() {
     try {
       const response = await axios.post("/api/users/login", user);
       if (response.data.success) {
-        alert("User has been logged in successfully");
+        
+        // set userID token cookie in browser and go to the home page
+        localStorage.setItem("token", response.data.data);
+        navigate("/");
+
       } else {
         alert(response.data.message);
       }
