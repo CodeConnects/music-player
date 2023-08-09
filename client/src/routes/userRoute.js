@@ -47,4 +47,20 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/get-user-data', async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
+    const userID = decodedToken.userID;
+    const user = await User.findOne({ _id: userID });
+    if (user) {
+      return res.status(200).send({ message: "User data found", success: true, data: user });
+    } else {
+      return res.status(400).send({ message: "User not found", success: false });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message, success: false });
+  }
+});
+
 module.exports = router;
