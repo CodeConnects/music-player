@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/register', async (req, res) => {
   try {
@@ -36,7 +37,7 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compareSync(req.body.password, user.password);
     if (validPassword) {
       const token = jwt.sign({ userID: user._id }, process.env.TOKEN_KEY, { expiresIn: '1h' });
-      
+
       // send userID in token to client
       return res.status(200).send({ message: "Successfull login", success: true, data: token });
     } else {
@@ -47,17 +48,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/get-user-data', async (req, res) => {
+router.post('/get-user-data', authMiddleware, async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
-    const userID = decodedToken.userID;
-    const user = await User.findOne({ _id: userID });
-    if (user) {
-      return res.status(200).send({ message: "User data found", success: true, data: user });
-    } else {
-      return res.status(400).send({ message: "User not found", success: false });
-    }
+    const user = await User.findById(req.body.userID);
+    return res.status(200).send({ message: "User data successfully retrieved", success: true, data: user });
   } catch (error) {
     res.status(500).send({ message: error.message, success: false });
   }
