@@ -22,7 +22,9 @@ function Home() {
   }
 
   useEffect(() => {
-    getUserData();
+    if (userData === null) {
+      getUserData();
+    }
   }, []);
 
   return (
