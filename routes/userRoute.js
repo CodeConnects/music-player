@@ -15,13 +15,14 @@ router.post('/register', async (req, res) => {
 
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
-      return res.status(400).send({ message: "Existing username", success: false });
-    } else {
+      return res.status(400).send({ message: "Existing username found", success: false });
+    }
+    else {
       await user.save();
-      return res.status(200).send({ message: "User registered", success: true });
+      return res.status(200).send({ message: "User registered successfully", success: true });
     }
   } catch (err) {
-    res.status(500).send({ message: err.message, success: false });
+    return res.status(500).send({ message: err.message, success: false });
   }
 });
 
@@ -40,11 +41,12 @@ router.post('/login', async (req, res) => {
 
       // send userID in token to client
       return res.status(200).send({ message: "Successfull login", success: true, data: token });
-    } else {
+    }
+    else {
       return res.status(400).send({ message: "Invalid password", success: false });
     }
   } catch (error) {
-    res.status(500).send({ message: error.message, success: false });
+    return res.status(500).send({ message: error.message, success: false });
   }
 });
 
@@ -53,7 +55,7 @@ router.post('/get-user-data', authMiddleware, async (req, res) => {
     const user = await User.findById(req.body.userID);
     return res.status(200).send({ message: "User data successfully retrieved", success: true, data: user });
   } catch (error) {
-    res.status(500).send({ message: error.message, success: false });
+    return res.status(500).send({ message: error.message, success: false });
   }
 });
 
