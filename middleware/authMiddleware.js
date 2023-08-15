@@ -6,8 +6,8 @@ module.exports = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
     req.body.userID = decodedToken.userID;
     next();
-  } catch (error) {
+  } catch (error) { 
     console.log(error);
-    res.status(500).send({ message: error.message, success: false });
+    return res.status(500).send({ message: error.message, success: false });
   }
 }
