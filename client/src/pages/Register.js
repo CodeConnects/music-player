@@ -7,20 +7,22 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const register = async () => {
+    console.log(user);
     try {
       const response = await axios.post("/api/users/register", user);
       if (response.data.success) {
+        //localStorage.setItem("token", response.data.data);
         alert("User has been registered successfully");
-      } else {
+      } 
+      else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
-  }
+  };
   return (
     <div className="flex min-h-screen items-start justify-center text-center ">
       <div className="form-wrap flex flex-col p-5 mt-6 border border-gray-400 bg-">
@@ -46,14 +48,10 @@ function Register() {
           className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
           placeholder="Password"
           value={user.password}
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
-        />
-        <input 
-          type="password"
-          className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
-          placeholder="Confirm Password"
-          value={user.confirmPassword}
-          onChange={(e) => setUser({ ...user, confirmPassword: e.target.value })}
+          onChange={(e) => {
+            setUser({ ...user, password: e.target.value });
+            console.log(e.target.value);
+          }}
         />
         
         <button
