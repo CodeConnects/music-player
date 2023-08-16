@@ -12,18 +12,19 @@ function Login() {
     try {
       const response = await axios.post("/api/users/login", user);
       if (response.data.success) {
-        
         // set userID token cookie in browser and go to the home page
         localStorage.setItem("token", response.data.data);
+        console.log(response.data.data);
+        alert("User has been logged in successfully");
         navigate("/");
 
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
-  }
+  };
   return (
     <div className="flex min-h-screen items-start justify-center text-center ">
       <div className="form-wrap flex flex-col p-5 mt-6 border border-gray-400">
