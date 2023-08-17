@@ -14,12 +14,12 @@ function Home() {
       });
       if (response.data.success) {
         setUserData(response.data.data);
-        console.log(response.data.data);
+        //console.log(response.data.data);
       }
       else {
         alert(response.data.message);
       }
-      console.log(response.data);
+      //console.log(response.data);
     } catch (error) {
       console.log(error);
     }

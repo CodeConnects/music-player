@@ -9,12 +9,12 @@ function Register() {
     password: "",
   });
   const register = async () => {
-    console.log(user);
+    //console.log(user);
     try {
       const response = await axios.post("/api/users/register", user);
       if (response.data.success) {
         //localStorage.setItem("token", response.data.data);
-        alert("User has been registered successfully");
+        console.log("User has been registered successfully " + user);
       } 
       else {
         alert(response.data.message);

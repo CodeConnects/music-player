@@ -14,8 +14,9 @@ function Login() {
       if (response.data.success) {
         // set userID token cookie in browser and go to the home page
         localStorage.setItem("token", response.data.data);
-        console.log(response.data.data);
-        alert("User has been logged in successfully");
+        //console.log(response.data.data);
+        console.log("User has been logged in successfully");
+        //alert("User has been logged in successfully");
         navigate("/");
 
       } else {
