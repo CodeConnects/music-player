@@ -48,10 +48,7 @@ function Register() {
           className="text-center border-2 border-gray-300 rounded-md p-2 m-2"
           placeholder="Password"
           value={user.password}
-          onChange={(e) => {
-            setUser({ ...user, password: e.target.value });
-            console.log(e.target.value);
-          }}
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
         
         <button
