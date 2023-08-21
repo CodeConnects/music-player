@@ -53,7 +53,11 @@ router.post('/login', async (req, res) => {
 router.post('/get-user-data', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.body.userID);
+
+    // remove password from user object before sending to front end
+    user.password = undefined;
     return res.status(200).send({ message: "User data successfully retrieved", success: true, data: user });
+
   } catch (error) {
     return res.status(500).send({ message: error.message, success: false });
   }
