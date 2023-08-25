@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     req.body.userID = decodedToken.userID;
     next();
   } catch (error) { 
-    console.log(error);
+    console.log('jwt token not verified');
     return res.status(500).send({ message: error.message, success: false });
   }
 }
