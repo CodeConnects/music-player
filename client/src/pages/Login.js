@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
   const login = async () => {
     try {
+      dispatch(ShowLoading());
       const response = await axios.post("/api/users/login", user);
+      dispatch(HideLoading());
       if (response.data.success) {
         // set userID token cookie in browser and go to the home page
         localStorage.setItem("token", response.data.data);
@@ -23,6 +28,7 @@ function Login() {
         alert(response.data.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
       console.log(error);
     }
   };
