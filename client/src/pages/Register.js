@@ -1,25 +1,35 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 
 function Register() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState({
     username: "",
     email: "",
     password: "",
   });
+
   const register = async () => {
     //console.log(user);
     try {
+      dispatch(ShowLoading());
       const response = await axios.post("/api/users/register", user);
+      dispatch(HideLoading());
       if (response.data.success) {
         //localStorage.setItem("token", response.data.data);
         console.log("User has been registered successfully " + user);
+        navigate("/login");
       } 
       else {
         alert(response.data.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
       console.log(error);
     }
   };
