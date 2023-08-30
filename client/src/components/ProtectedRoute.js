@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { SetUser } from "../redux/userSlice";
+import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 
 function ProtectedRoute({children}) {
+  const {user} = useSelector((state) => state.user);
   const [readyRender, setReadyRender] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   const getUserData = async () => {
     try {
+      dispatch(ShowLoading());
       const response = await axios.post("/api/users/get-user-data", {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      dispatch(HideLoading());
       if (response.data.success) {
-        setUserData(response.data.data);
+        // move to redux reducer ~ setUserData(response.data.data);
+        dispatch(SetUser(response.data.data));
         //console.log(response.data.data);
       }
       else {
@@ -25,6 +32,7 @@ function ProtectedRoute({children}) {
       //console.log(response.data);
     } catch (error) {
       // remove token cookie and send to login page if error
+      dispatch(HideLoading());
       localStorage.removeItem("token");
       setReadyRender(true);
       console.log(error);
@@ -33,14 +41,14 @@ function ProtectedRoute({children}) {
   };
 
   useEffect(() => {
-    if (userData === null) {
+    if (user === null) {
       getUserData();
     }
   }, []);
 
 
   return (
-    <div>{readyRender ? children : <div>Loading...</div>}</div>
+    <div>{readyRender && children}</div>
   );
 }
 
