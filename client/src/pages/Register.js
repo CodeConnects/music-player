@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/alertsSlice";
+import { toast } from "react-hot-toast";
 
 function Register() {
   const navigate = useNavigate();
@@ -20,15 +21,19 @@ function Register() {
       dispatch(ShowLoading());
       const response = await axios.post("/api/users/register", user);
       dispatch(HideLoading());
+
       if (response.data.success) {
         //localStorage.setItem("token", response.data.data);
         console.log("User has been registered successfully " + user);
+        toast.success(response.data.message);
         navigate("/login");
       } 
       else {
-        alert(response.data.message);
+        toast.error(response.data.message);
+        //alert(response.data.message);
       }
     } catch (error) {
+      toast.error('Error registering user');
       dispatch(HideLoading());
       console.log(error);
     }
