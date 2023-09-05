@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/alertsSlice";
+import { toast } from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -16,18 +17,20 @@ function Login() {
       dispatch(ShowLoading());
       const response = await axios.post("/api/users/login", user);
       dispatch(HideLoading());
-      if (response.data.success) {
-        // set userID token cookie in browser and go to the home page
-        localStorage.setItem("token", response.data.data);
-        //console.log(response.data.data);
-        console.log("User has been logged in successfully");
-        //alert("User has been logged in successfully");
-        navigate("/");
 
-      } else {
-        alert(response.data.message);
+      if (response.data.success) {
+        toast.success(response.data.message);
+        console.log("User has been logged in successfully");
+
+        // set userID token cookie in browser and send to the home page
+        localStorage.setItem("token", response.data.data);
+        navigate("/");
+      }
+      else {
+        toast.error(response.data.message);
       }
     } catch (error) {
+      toast.error('Error logging in user');
       dispatch(HideLoading());
       console.log(error);
     }
