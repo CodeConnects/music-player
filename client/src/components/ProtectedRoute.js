@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/userSlice";
 import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 
+import DefaultLayout from "./DefaultLayout";
+
 function ProtectedRoute({children}) {
   const {user} = useSelector((state) => state.user);
   const [readyRender, setReadyRender] = useState(false);
@@ -48,7 +50,7 @@ function ProtectedRoute({children}) {
 
 
   return (
-    <div>{readyRender && children}</div>
+    <div>{readyRender && <DefaultLayout>{children}</DefaultLayout>}</div>
   );
 }
 
